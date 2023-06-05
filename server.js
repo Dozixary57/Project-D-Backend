@@ -1,6 +1,4 @@
-const fastify = require('fastify')({
-    logger: true
-})
+const fastify = require('fastify')({ logger: true })
 
 // Declare a route
 fastify.get('/', (request, reply) => {
