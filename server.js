@@ -1,5 +1,10 @@
 const fastify = require('fastify')({ logger: true })
 
+// Declare a route
+fastify.get('/', (request, reply) => {
+    reply.send('Server is running!')
+})
+
 // Declare a connection to MongoDB
 fastify.register(require('@fastify/mongodb'), {
     forceClose: true,
@@ -7,41 +12,11 @@ fastify.register(require('@fastify/mongodb'), {
     database: 'ReactMongoDB_TEST'
 })
 
-//fastify.get('/Items', async (request, reply) => {
-//    const items = await fastify.mongo.db.collection('items').find().toArray()
+const route = require('./routes/route_items')
 
-//    reply.send(items)
-//})
+route(fastify)
 
-// Declare a route
-fastify.get('/Item/:id', async function (req, reply) {
-    try {
-        const id = new this.mongo.ObjectId(req.params.id)
-        const item = await fastify.mongo.db.collection('items').findOne({ _id: id })
-        reply.send(item)
-    } catch (err) {
-        reply.send(err)
-    }
-})
-
-// Declare a route
-fastify.get('/Items', async function (req, reply) {
-    try {
-        const items = await fastify.mongo.db.collection('items').find().toArray()
-        reply.send(items)
-    } catch (err) {
-        reply.send(err)
-    }
-})
-
-//// Declare a route
-//fastify.get('/', (request, reply) => {
-//    reply.send('Hello, world!')
-//})
-
-
-
-// Run the server!
+// Run the server
 fastify.listen({ port: 5000 }, (err, address) => {
     if (err) throw err
     console.log(`Server is now listening on ${address}`)
