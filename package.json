@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "startmon": "nodemon server"
   },
   "eslintConfig": {},
   "dependencies": {
