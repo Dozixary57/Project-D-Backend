@@ -27,23 +27,26 @@ module.exports = async function (fastify) {
         // http://localhost:5000/Item/64825519e97f28274a958dca
         try {
             if (mongodb.ObjectId.isValid(req.params.id)) {
-                const idOrTitle = new this.mongo.ObjectId(req.params.id);
+                const idOrTitle = new this.mongo.ObjectId(req.params.id)
                 const item = await fastify.mongo.db.collection('items2').findOne({ _id: idOrTitle })
                 if (item) {
                     //reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
                     reply.status(200).send(item)
                     return
                 }
+            } else {
+                const idOrTitle = req.params.id
+                const item = await fastify.mongo.db.collection('items2').findOne({ itemTitle: idOrTitle })
+                if (item) {
+                    //reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
+                    reply.status(200).send(item)
+                    return
+                } else {
+                    reply.status(404).send('Item not found.')
+                    return
+                }
             }
-            //else {
-            //    const idOrTitle = new this.mongo.String(req.params.String);
-            //    const item = await fastify.mongo.db.collection('items2').findOne({ itemTitle: idOrTitle })
-            //    if (item) {
-            //        reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
-            //        return
-            //    }
-            //}
-            reply.header('Cache-Control', 'public, max-age=30');
+            //reply.header('Cache-Control', 'public, max-age=30');
         } catch (err) {
             reply.send(err);
         }
