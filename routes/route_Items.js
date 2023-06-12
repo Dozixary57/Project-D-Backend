@@ -1,6 +1,8 @@
 const mongodb = require('@fastify/mongodb')
+const chalk = require('chalk')
 
 module.exports = async function (fastify) {
+
     // Declare a route
     fastify.get('/Items', async function (req, reply) {
         try {
@@ -11,44 +13,32 @@ module.exports = async function (fastify) {
         }
     })
 
-    //// Declare a route
-    //fastify.get('/Item/:id', async function (req, reply) {
-    //    try {
-    //        const id = new this.mongo.ObjectId(req.params.id)
-    //        const item = await fastify.mongo.db.collection('items').findOne({ _id: id })
-    //        reply.status(200).send(item)
-    //    } catch (err) {
-    //        reply.send(err)
-    //    }
-    //})
-
 
     fastify.get('/Item/:id', async function (req, reply) {
         // http://localhost:5000/Item/64825519e97f28274a958dca
         try {
             if (mongodb.ObjectId.isValid(req.params.id)) {
-                const idOrTitle = new this.mongo.ObjectId(req.params.id)
-                const item = await fastify.mongo.db.collection('items2').findOne({ _id: idOrTitle })
+                const id = new this.mongo.ObjectId(req.params.id)
+                const item = await fastify.mongo.db.collection('items2').findOne({ _id: id })
                 if (item) {
                     //reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
                     reply.status(200).send(item)
                     return
                 }
             } else {
-                const idOrTitle = req.params.id
-                const item = await fastify.mongo.db.collection('items2').findOne({ itemTitle: idOrTitle })
-                if (item) {
-                    //reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
-                    reply.status(200).send(item)
-                    return
-                } else {
-                    reply.status(404).send('Item not found.')
-                    return
-                }
+                item = await fastify.mongo.db.collection('items2').findOne({ itemTitle: req.params.id.replace(/_/g, ' ') });
             }
-            //reply.header('Cache-Control', 'public, max-age=30');
+
+            if (item) {
+                reply.status(200).send(item);
+                return;
+            } else {
+                reply.status(404).send('Item not found.');
+                return;
+            }
         } catch (err) {
             reply.send(err);
         }
-    });
+    
+    })
 }

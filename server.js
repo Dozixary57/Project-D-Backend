@@ -16,13 +16,6 @@ const route = require('./routes/route_items')
 
 route(fastify)
 
-//Timer
-//setTimeout(() => {
-//    fastify.close(() => {
-//        console.log('Server stopped');
-//    });
-//}, 600000);
-
 // Run the server
 fastify.listen({ port: 5000 }, (err, address) => {
     if (err) throw err
