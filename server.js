@@ -14,6 +14,11 @@ fastify.register(require('@fastify/mongodb'), {
 
 const route = require('./routes/route_items')
 
+// Error handler for non-existent routes
+fastify.setNotFoundHandler((req, reply) => {
+    reply.code(404).send('This route not found.');
+})
+
 route(fastify)
 
 // Run the server
