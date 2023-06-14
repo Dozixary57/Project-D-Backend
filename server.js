@@ -1,6 +1,6 @@
 const fastify = require('fastify')(/*{ logger: true }*/)
 
-// Declare a route
+// Declare a service route
 fastify.get('/', (request, reply) => {
     reply.send('Server is running!')
 })
@@ -9,17 +9,18 @@ fastify.get('/', (request, reply) => {
 fastify.register(require('@fastify/mongodb'), {
     forceClose: true,
     url: 'mongodb://127.0.0.1:27017',
-    database: 'ReactMongoDB_TEST'
+    database: 'ProjectD_Survival'
 })
 
-const route = require('./routes/route_items')
+// Declare a main routes
+const route_items = require('./routes/route_items')
+
+route_items(fastify)
 
 // Error handler for non-existent routes
 fastify.setNotFoundHandler((req, reply) => {
     reply.code(404).send('This route not found.');
 })
-
-route(fastify)
 
 // Run the server
 fastify.listen({ port: 5000 }, (err, address) => {
