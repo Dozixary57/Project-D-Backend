@@ -1,4 +1,4 @@
-const fastify = require('fastify')({ logger: true })
+const fastify = require('fastify')(/*{ logger: true }*/)
 
 // Declare a route
 fastify.get('/', (request, reply) => {
@@ -14,14 +14,12 @@ fastify.register(require('@fastify/mongodb'), {
 
 const route = require('./routes/route_items')
 
-route(fastify)
+// Error handler for non-existent routes
+fastify.setNotFoundHandler((req, reply) => {
+    reply.code(404).send('This route not found.');
+})
 
-//Timer
-//setTimeout(() => {
-//    fastify.close(() => {
-//        console.log('Server stopped');
-//    });
-//}, 600000);
+route(fastify)
 
 // Run the server
 fastify.listen({ port: 5000 }, (err, address) => {

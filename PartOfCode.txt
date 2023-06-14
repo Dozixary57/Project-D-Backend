@@ -1,0 +1,88 @@
+//Timer
+//setTimeout(() => {
+//    fastify.close(() => {
+//        console.log('Server stopped');
+//    });
+//}, 600000);
+
+
+//// Declare a route
+//fastify.get('/Item/:id', async function (req, reply) {
+//    try {
+//        const id = new this.mongo.ObjectId(req.params.id)
+//        const item = await fastify.mongo.db.collection('items').findOne({ _id: id })
+//        reply.status(200).send(item)
+//    } catch (err) {
+//        reply.send(err)
+//    }
+//})
+
+
+//reply.header('Cache-Control', 'public, max-age=30');
+
+
+//fastify.get('/Item/:id', async function (req, reply) {
+    //    // http://localhost:5000/Item/64825519e97f28274a958dca
+    //    try {
+    //        if (mongodb.ObjectId.isValid(req.params.id)) {
+    //            const id = new this.mongo.ObjectId(req.params.id)
+    //            const item = await fastify.mongo.db.collection('items2').findOne({ _id: id })
+    //            if (item) {
+    //                //reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
+    //                reply.status(200).send(item)
+    //                return
+    //            }
+    //        } else {
+    //            const Title_ = req.params.id
+    //            const Title = Title_.replace(/_/g, ' ')
+    //            const item = await fastify.mongo.db.collection('items2').findOne({ itemTitle: Title })
+    //            reply.send(Title_)
+    //            //if (item) {
+    //            //    //reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
+    //            //    console.log(chalk.red('Found!'))
+    //            //    reply.status(200).send(item)
+    //            //    return
+    //            //} else {
+    //            //    console.log('Not found!')
+    //            //    reply.status(404).send('Item not found.')
+    //            //    return
+    //            //}
+    //        }
+    //    } catch (err) {
+    //        reply.send(err);
+    //    }
+    //})
+
+//Ну просто жесть какой глючный (не рабочий, если Назва_ние в URL) код!!! Не знаю почему(((
+ fastify.get('/Item/:id', async function (req, reply) {
+        // http://localhost:5000/Item/64825519e97f28274a958dca
+        try {
+            if (mongodb.ObjectId.isValid(req.params.id)) {
+                const id = new this.mongo.ObjectId(req.params.id)
+                const item = await fastify.mongo.db.collection('items2').findOne({ _id: id })
+                if (item) {
+                    //reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
+                    reply.status(200).send(item)
+                    return
+                }
+            } else {
+                const Title_ = req.params.id
+                const Title = Title_.replace(/_/g, ' ')
+                const item = await fastify.mongo.db.collection('items2').findOne({ itemTitle: Title })
+                reply.send(Title_)
+                //if (item) {
+                //    //reply.redirect(301, `/Item/${item.itemTitle}`).send(item)
+                //    console.log(chalk.red('Found!'))
+                //    reply.status(200).send(item)
+                //    return
+                //} else {
+                //    console.log('Not found!')
+                //    reply.status(404).send('Item not found.')
+                //    return
+                //}
+            }
+        } catch (err) {
+            reply.send(err);
+        }
+    })
+}
