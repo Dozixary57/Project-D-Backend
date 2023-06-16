@@ -12,22 +12,6 @@ module.exports = async function (fastify) {
 
             bucket.openDownloadStreamByName('Branch.png').pipe(fs.createWriteStream('./Branch.png'))
 
-<<<<<<< HEAD
-
-            //const id = new this.mongo.ObjectId(req.params.id)
-            //const file = await this.mongo.db.collection('fs.files').findOne({ _id: id })
-
-            //if (!file) {
-            //    reply.status(404).send('File not found!')
-            //    return
-            //} else {
-            //    reply.status(200).send(file.filename)
-            //    return
-            //}
-
-
-=======
->>>>>>> Synchronized with Frontend (without image support).
         } catch (err) {
             reply.send(err);
         }

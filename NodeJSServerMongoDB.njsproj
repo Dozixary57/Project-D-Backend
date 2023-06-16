@@ -29,6 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="PartOfCode.txt" />
+    <Content Include="routes\route_gridfs.js" />
     <Content Include="routes\route_items.js" />
     <Content Include="server.js" />
     <Content Include="package.json" />
