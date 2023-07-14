@@ -13,9 +13,13 @@ fastify.register(require('@fastify/mongodb'), {
 })
 
 // Declare a main routes
+// client
 const route_items = require('./routes/route_items')
-
 route_items(fastify)
+
+// data
+const route_gridfs = require('./routes/route_gridfs')
+route_gridfs(fastify)
 
 // Error handler for non-existent routes
 fastify.setNotFoundHandler((req, reply) => {

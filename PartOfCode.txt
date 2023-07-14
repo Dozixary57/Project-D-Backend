@@ -53,7 +53,7 @@
     //    }
     //})
 
-//Ну просто жесть какой глючный (не рабочий, если Назва_ние в URL) код!!! Не знаю почему(((
+//пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ_пїЅпїЅпїЅ пїЅ URL) пїЅпїЅпїЅ!!! пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ(((
  fastify.get('/Item/:id', async function (req, reply) {
         // http://localhost:5000/Item/64825519e97f28274a958dca
         try {
@@ -97,3 +97,28 @@
             //    reply.status(200).send(file.filename)
             //    return
             //}
+            
+            
+            
+            
+            /*            if (fs.existsSync(path.join('GridFS', 'Covers', `Branch.png`))) {
+                            console.log('Р¤Р°Р№Р» СЃСѓС‰РµСЃС‚РІСѓРµС‚');
+                        } else {
+                            console.log('Р¤Р°Р№Р» РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚');
+                        }*/
+                        
+                        // const id = new this.mongo.ObjectId(req.params.id)
+                        
+                        // reply.send(path.join(process.cwd(), 'GridFS', 'Covers', `${id}`));
+            
+            /*            const db = this.mongo.db;
+                        const bucket = new mongodb.GridFSBucket(db, { bucketName: 'fs' });
+                        const fileCursor = bucket.find({ _id: id });
+            
+                        if (await fileCursor.hasNext()) {
+                            const filename = (await fileCursor.next()).filename;
+                            const imagePath = path.join(process.cwd(), 'GridFS', 'Covers', `${filename}`);
+                            reply.send(imagePath);
+                        } else {
+                            reply.code(404).send({ error: 'Image not found' });
+                        }*/
