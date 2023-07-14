@@ -1,4 +1,3 @@
-const mongodb = require('@fastify/mongodb')
 const chalk = require('chalk')
 
 const collection = "Items"
