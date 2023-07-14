@@ -24,7 +24,7 @@ module.exports = async function (fastify) {
                 const id = new this.mongo.ObjectId(req.params.id)
                 item = await fastify.mongo.db.collection(collection).findOne({ _id: id })
                 if (item) {
-                    reply.redirect(301, `/Item/${item.Title.replace(/ /g, '_')}`).send(item)      
+                    reply.redirect(302, `/Item/${item.Title.replace(/ /g, '_')}`).send(item)      
                     return
                 } else {
                     reply.status(404).send('Item not found.')
