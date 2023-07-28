@@ -12,14 +12,27 @@ fastify.register(require('@fastify/mongodb'), {
     database: 'ProjectD_Survival'
 })
 
+
+
 // Declare a main routes
+
+
+
 // client
-const route_items = require('./routes/route_items')
+const route_items = require('./Routes/route_items')
 route_items(fastify)
 
 // data
-const route_gridfs = require('./routes/route_gridfs')
+const route_gridfs = require('./Routes/route_gridfs')
 route_gridfs(fastify)
+
+// Authentication
+const JWT_Registration = require('./Tools/JWT_Registration')
+JWT_Registration(fastify)
+
+// Authentication routes
+const route_authentication = require('./Routes/route_authentication')
+route_authentication(fastify)
 
 // Error handler for non-existent routes
 fastify.setNotFoundHandler((req, reply) => {
