@@ -7,7 +7,7 @@ module.exports = async function (fastify) {
 
     fastify.post('/Authentication/Signin', async function (req, reply) {
         const { username, password } = req.body;
-        reply.send('Ok')
+        console.log(username)
     })
     
 }

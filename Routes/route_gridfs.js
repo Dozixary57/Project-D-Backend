@@ -1,6 +1,7 @@
 const mongodb = require('mongodb')
 const fs = require('fs')
 const path = require('path');
+const Logger = require('../Tools/Logger')
 
 module.exports = async function (fastify) {
 
@@ -21,8 +22,9 @@ module.exports = async function (fastify) {
             let fileCursor = bucket.find({ filename: (req.params.id.replace(/_/g, ' ') + '.png') });
             if (await fileCursor.hasNext()) {
                 const fileName = (await fileCursor.next()).filename;
-                console.log('Image exist by name in DB')
+                await Logger.DB('Image exist by name in DB')
                 if (fs.existsSync(path.join('GridFS', 'Covers', `${ fileName }`))) {
+
                     console.log('Image exist in FS. Image path sending...');
                     // http://localhost:5000/Covers/Branch.png
                     fileUrl = `${protocol}://${host}/Cover/${fileName}`;

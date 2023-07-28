@@ -1,5 +1,6 @@
 const fastify = require('fastify')(/*{ logger: true }*/)
-
+const cors = require('@fastify/cors')
+const Logger = require('./Tools/Logger')
 // Declare a service route
 fastify.get('/', (request, reply) => {
     reply.send('Server is running!')
@@ -12,7 +13,12 @@ fastify.register(require('@fastify/mongodb'), {
     database: 'ProjectD_Survival'
 })
 
-
+fastify.register(cors, {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+});
 
 // Declare a main routes
 
@@ -42,5 +48,5 @@ fastify.setNotFoundHandler((req, reply) => {
 // Run the server
 fastify.listen({ port: 5000 }, (err, address) => {
     if (err) throw err
-    console.log(`Server is now listening on ${address}`)
+    Logger.Server(`The server is running! ( ${address} )`)
 })
