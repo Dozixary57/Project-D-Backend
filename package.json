@@ -18,6 +18,7 @@
     "@fastify/mongodb": "^7.0.0",
     "@fastify/routes": "^5.1.0",
     "@fastify/static": "^6.10.2",
+    "bcrypt": "^5.1.0",
     "chalk": "^4.1.2",
     "eslint": "^8.42.0",
     "fastify": "^4.17.0",
