@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+
 const Logger = require('../Tools/Logger')
 
 const collection = "Accounts"
@@ -37,24 +38,61 @@ module.exports = async function (fastify) {
         return
     })
 
-    fastify.post('/Authentication/Signin', async function (req, reply) {
+    ////
+    fastify.decorate('authenticate', async function (req, reply) {
+        try {
+            await req.jwtVerify();
+        } catch {
+            reply.send('Not authorized.')
+            // reply.redirect(302, `/Authorization/Signin`)
+        }
+    })
+
+    fastify.get('/Account', { preValidation: [fastify.authenticate] }, async function (req, reply) {
+        reply.send({ protectedData: 'You have accessed protected data.' });
+    });
+    ////
+
+    fastify.post('/Authentication/Login', async function (req, reply) {
         const { Username, Password } = req.body;
 
         const account = await fastify.mongo.db.collection(collection).findOne({Username: Username})
 
         if (!account) {
-            return { accountExistsErr: 'An account with this username does not exist.'}
+            return { errUsername: 'An account with this username does not exist.', errPassword: null }
         }
 
         const match = await checkPassword(Password, account.Password);
 
         if (match) {
-            reply.send({ success: 'Login to the account was completed successfully.' });
+            const refreshToken = fastify.jwt.sign({Username: Username}, {sub: 'refreshToken', expiresIn: '10m'})
+            const accessToken = fastify.jwt.sign({Username: Username}, {sub: 'accessToken', expiresIn: '1m'})
+
+            await fastify.mongo.db.collection(collection).updateOne( { Username: Username }, {
+                $set: {
+                    'Authentication.RefreshToken': refreshToken
+                },
+                $push: {
+                    'Authentication.Sessions': {
+                        Time: new Date(),
+                        Timezone: '',
+                        OS: req.userAgent.os.family + ' ' + req.userAgent.os.major,
+                        Browser: req.userAgent.family,
+                        Country: '',
+                        Region: '',
+                        City: ''
+                    }
+                }
+            } )
+            // maxAge: 1209600 -14d
+            reply.setCookie('RefreshToken', refreshToken, {maxAge: 600, path: '/', signed: true, httpOnly: true, secure: 'auto'}).send({ accessToken, msgSuccess: 'Login to the account was completed successfully.' });
+            await Logger.Ok('Успешный вход в аккаунт.')
             return
         } else {
-            reply.send({ failure: 'Incorrect password.' });
+            reply.send({ errUsername: null, errPassword: 'Incorrect Password.' });
+            await Logger.Err('Ошибка авторизации.')
             return
         }
     })
-    
+
 }

@@ -1,8 +1,7 @@
 const chalk = require('chalk')
 
-const collection = "Items"
-
 module.exports = async function (fastify) {
+    const collection = fastify.config.COLLECTION_ITEMS
 
     // Declare a route
     fastify.get('/Items', async function (req, reply) {

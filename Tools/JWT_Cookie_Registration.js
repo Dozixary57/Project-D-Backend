@@ -15,7 +15,16 @@ module.exports = async function (fastify) {
             private: privateKey,
             public: publicKey
         },
-        sign: { algorithm: 'RS256' }
+        sign: {
+            algorithm: 'RS256',
+            iss: 'http://localhost:5000'
+        }
+    })
+
+    fastify.register(require('@fastify/cookie'), {
+        secret: privateKey,
+        hook: 'onRequest',
+        parseOptions: {}
     })
 
 }

@@ -38,7 +38,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="Tools\CryptoKeyPair_Generator.js" />
-    <Content Include="Tools\JWT_Registration.js" />
+    <Content Include="Tools\JWT_Cookie_Registration.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Authentication\" />
