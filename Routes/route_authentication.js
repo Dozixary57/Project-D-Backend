@@ -59,7 +59,7 @@ module.exports = async function (fastify) {
         const account = await fastify.mongo.db.collection(collection).findOne({Username: Username})
 
         if (!account) {
-            return { errUsername: 'An account with this username does not exist.', errPassword: null }
+            return { errUsername: 'An account with this username does not exist.', errPassword: ' ' }
         }
 
         const match = await checkPassword(Password, account.Password);
@@ -85,6 +85,7 @@ module.exports = async function (fastify) {
                 }
             } )
             // maxAge: 1209600 -14d
+            // await new Promise(resolve => setTimeout(resolve, 1000)); // Задержка на 1 секунду
             reply.setCookie('RefreshToken', refreshToken, {maxAge: 600, path: '/', signed: true, httpOnly: true, secure: 'auto'}).send({ accessToken, msgSuccess: 'Login to the account was completed successfully.' });
             await Logger.Ok('Успешный вход в аккаунт.')
             return
@@ -93,6 +94,11 @@ module.exports = async function (fastify) {
             await Logger.Err('Ошибка авторизации.')
             return
         }
+    })
+
+    fastify.get('/Authentication/Logout', async function (req, reply) {
+        reply.clearCookie('RefreshToken').send({ msg: 'You have successfully logged out!'})
+        return
     })
 
 }

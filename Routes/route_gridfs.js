@@ -5,14 +5,9 @@ const Logger = require('../Tools/Logger')
 
 module.exports = async function (fastify) {
 
-    fastify.register(require('@fastify/static'), {
-        root: path.join(process.cwd(), 'GridFS', 'Covers'),
-        prefix: '/Cover/',
-        constraints: { host: 'localhost:5000' }
-    })
-
     fastify.get('/GridFS/Cover/:id', async function (req, reply) {
         try {
+
             const host = req.headers.host;
             const protocol = req.protocol;
             let fileUrl;

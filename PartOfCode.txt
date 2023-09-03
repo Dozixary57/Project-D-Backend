@@ -122,3 +122,30 @@
                         } else {
                             reply.code(404).send({ error: 'Image not found' });
                         }*/
+
+
+
+
+
+
+                            // Items Collection Data Updater
+                            const ItemsDataChangeStream = fastify.mongo.db.collection('Items').watch()
+                            ItemsDataChangeStream.on('change', () => {
+                                Logger.DB('Change detected.');
+                                // WebSocketEvent
+                        /*        fastify.websocket.on('connection', (socket, request) => {
+                                    socket.send(JSON.stringify({message: 'Hello from server'}));
+
+                        /!*            socket.on('message', message => {
+                                        // Обработка сообщения от клиента
+                                    });*!/
+
+                                })*/
+                            })
+
+
+
+
+
+
+

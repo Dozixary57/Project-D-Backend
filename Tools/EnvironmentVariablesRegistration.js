@@ -12,7 +12,19 @@ async function EnvironmentVariablesRegistration(fastify) {
                 type: 'string',
                 default: '5000'
             },
-            MONGODB_URL: {
+            MONGODB_URL_COMPASS: {
+                type: 'string',
+                default: ''
+            },
+            DB_NAME_COMPASS: {
+                type: 'string',
+                default: ''
+            },
+            MONGODB_URL_CLUSTER: {
+                type: 'string',
+                default: ''
+            },
+            DB_NAME_CLUSTER: {
                 type: 'string',
                 default: ''
             },

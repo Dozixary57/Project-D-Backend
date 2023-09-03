@@ -1,3 +1,5 @@
+const Logger = require("./Tools/Logger");
+const dataUpdater = require("./Tools/DataUpdater");
 (async () => {
     const fastify = require('fastify')(/*{ logger: true }*/)
     const Logger = require('./Tools/Logger')
@@ -31,13 +33,25 @@
     const route_authentication = require('./Routes/route_authentication')
     route_authentication(fastify)
 
+    // Data Updater
+/*    fastify.ready(err => {
+        if (err) throw err
+        if (fastify.mongo.client.s.url.indexOf("mongodb+srv://") !== -1) {
+            const dataUpdater = require('./Tools/DataUpdater')
+            dataUpdater(fastify)
+        }
+    })*/
+
+    const dataUpdater = require('./Tools/DataUpdater')
+    await dataUpdater(fastify)
+
+
     // Error handler for non-existent routes
     fastify.setNotFoundHandler((req, reply) => {
         reply.code(404).send('This route not found.');
     })
 
     // Run the server
-
     fastify.listen({ port: fastify.config.PORT || 5050 }, (err, address) => {
         if (err) throw err
         Logger.Server(`The server is running! ( ${address} )`)
