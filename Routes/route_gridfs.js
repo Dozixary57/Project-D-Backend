@@ -17,21 +17,21 @@ module.exports = async function (fastify) {
             let fileCursor = bucket.find({ filename: (req.params.id.replace(/_/g, ' ') + '.png') });
             if (await fileCursor.hasNext()) {
                 const fileName = (await fileCursor.next()).filename;
-                await Logger.DB('Image exist by name in DB')
+                await Logger.Database.Info('Image exist by name in DB')
                 if (fs.existsSync(path.join('GridFS', 'Covers', `${ fileName }`))) {
 
                     console.log('Image exist in FS. Image path sending...');
                     // http://localhost:5000/Covers/Branch.png
                     fileUrl = `${protocol}://${host}/Cover/${fileName}`;
                     reply.status(200).send(fileUrl)
-                    // reply.redirect(302, `/Cover/${fileName.replace(/ /g, '_')}`).type('image/png').sendFile(`${fileName}`)
+                    // reply.redirect(302, `/Covers/${fileName.replace(/ /g, '_')}`).type('image/png').sendFile(`${fileName}`)
                     return
                 } else {
                     bucket.openDownloadStreamByName(fileName).pipe(fs.createWriteStream(`./GridFS/Covers/${fileName}`))
                     console.log('Image dont exist in FS. Image downloading... Image path sending...')
                     fileUrl = `${protocol}://${host}/Cover/${fileName}`;
                     reply.status(200).send(fileUrl)
-                    // reply.redirect(302, `/Cover/${fileName.replace(/ /g, '_')}`).type('image/png').sendFile(`${fileName}`)
+                    // reply.redirect(302, `/Covers/${fileName.replace(/ /g, '_')}`).type('image/png').sendFile(`${fileName}`)
                     return
                 }
             } else {
@@ -45,14 +45,14 @@ module.exports = async function (fastify) {
                         console.log('Image exist in FS. Image path sending...');
                         fileUrl = `${protocol}://${host}/Cover/${fileName}`;
                         reply.status(200).send(fileUrl)
-                        // reply.redirect(302, `/Cover/${fileName.replace(/ /g, '_')}`).type('image/png').sendFile(`${fileName}`)
+                        // reply.redirect(302, `/Covers/${fileName.replace(/ /g, '_')}`).type('image/png').sendFile(`${fileName}`)
                         return
                     } else {
                         bucket.openDownloadStream(id).pipe(fs.createWriteStream(`./GridFS/Covers/${fileName}`))
                         console.log('Image dont exist in FS. Image downloading... Image path sending...')
                         fileUrl = `${protocol}://${host}/Cover/${fileName}`;
                         reply.status(200).send(fileUrl)
-                        // reply.redirect(302, `/Cover/${fileName.replace(/ /g, '_')}`).type('image/png').sendFile(`${fileName}`)
+                        // reply.redirect(302, `/Covers/${fileName.replace(/ /g, '_')}`).type('image/png').sendFile(`${fileName}`)
                         return
                     }
                 } else {

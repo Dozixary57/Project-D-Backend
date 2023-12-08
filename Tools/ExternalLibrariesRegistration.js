@@ -1,6 +1,7 @@
 const cors = require("@fastify/cors");
 const Logger = require("./Logger");
 const path = require("path");
+
 module.exports = async function (fastify) {
 
     // CORS
@@ -10,21 +11,21 @@ module.exports = async function (fastify) {
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
     }).ready(() => {
-        Logger.Server('@Fastify/Cors успешно зарегестрирован!')
+        Logger.Server.Ok('@Fastify/Cors успешно зарегестрирован!')
     })
 
     // WebSocket
     fastify.register(require('@fastify/websocket')).ready(() => {
-        Logger.Server('@Fastify/WebSocket успешно зарегестрирован!')
+        Logger.Server.Ok('@Fastify/WebSocket успешно зарегестрирован!')
     })
 
     // Static
     fastify.register(require('@fastify/static'), {
         root: path.join(process.cwd(), 'GridFS', 'Covers'),
-        prefix: '/Cover/',
+        prefix: '/Covers/',
         constraints: { host: 'localhost:5000' }
     }).ready(()=> {
-        Logger.Server('@Fastify/Static успешно зарегестрирован!')
+        Logger.Server.Ok('@Fastify/Static успешно зарегестрирован!')
     })
 
     // MongoDB
@@ -33,10 +34,11 @@ module.exports = async function (fastify) {
         url: fastify.config.MONGODB_URL_CLUSTER,
         database: fastify.config.DB_NAME_CLUSTER
     }).ready(()=> {
-            Logger.Server('@Fastify/MongoDB успешно зарегестрирован!')
+            Logger.Server.Ok('@Fastify/MongoDB успешно зарегестрирован!')
     })
 
     // Fastify User Agent
-    fastify.register(require('fastify-user-agent'))
-
+    fastify.register(require('fastify-user-agent')).ready(()=>
+        Logger.Server.Ok('@Fastify-user-agent успешно зарегестрирован!')
+    )
 }

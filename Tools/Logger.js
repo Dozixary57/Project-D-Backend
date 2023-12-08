@@ -6,46 +6,70 @@ function DataTime() {
     const DataTime = `${DT.getHours() % 12 ? (DT.getHours() % 12).toString().padStart(2, '0') : 12}:${DT.getMinutes().toString().padStart(2, '0')}:${DT.getSeconds().toString().padStart(2, '0')}:${Math.round(DT.getMilliseconds() / 10).toString().padStart(2, '0')} ${DT.getHours() > 12 ? 'PM' : 'AM'}  ${(DT.getMonth() + 1).toString().padStart(2, '0')}/${DT.getDate()}/${DT.getFullYear().toString().slice(-2).padStart(2, '0')}`;
     return DataTime
 }
+
 const Logger = {
-    Ok: async (str) => {
-        const D = DataTime()
-        console.log(chalk.white('[' + D + '] ') + chalk.bold.whiteBright.bgGreenBright(' Ok ') + chalk.bold.greenBright(' > ' + str))
-        log('[' + D + ']' + ' Success     > ' + str)
+    Server: {
+        Ok: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgGreenBright(' Ok ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Server[Ok]>     ' + str)
+        },
+        Err: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgRedBright(' Err ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Server[Err]>    ' + str)
+        },
+        Warn: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgYellowBright(' Warn ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Server[Warn]>   ' + str)
+        },
+        Info: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgBlueBright(' Info ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Server[Info]>   ' + str)
+        },
+        Deb: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgMagentaBright(' Deb ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Server[Deb]>    ' + str)
+        }
     },
-    Info: async (str) => {
-        const D = DataTime()
-        console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgBlueBright(' Info ') + chalk.bold.blueBright(' > ' + str))
-        log('[' + D + ']' + ' Information > ' + str)
-    },
-    Deb: async (str) => {
-        const D = DataTime()
-        console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgMagentaBright(' Deb ') + chalk.bold.magentaBright(' > ' + str))
-        log('[' + D + ']' + ' Debug       > ' + str)
-    },
-    Warn: async (str) => {
-        const D = DataTime()
-        console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgYellowBright(' Warn ') + chalk.bold.yellowBright(' > ' + str))
-        log('[' + D + ']' + ' Warning     > ' + str)
-    },
-    Err: async (str) => {
-        const D = DataTime()
-        console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgRedBright(' Err ') + chalk.bold.redBright(' > ' + str))
-        log('[' + D + ']' + ' Error       > ' + str)
-    },
-    Server: async (str) => {
-        const D = DataTime()
-        console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.cyanBright(' > ' + str))
-        log('[' + D + ']' + ' Server      > ' + str)
-    },
-    DB: async (str) => {
-        const D = DataTime()
-        console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgBlackBright(' DB ') + chalk.bold.whiteBright(' > ' + str))
-        log('[' + D + ']' + ' Database    > ' + str)
+    Database: {
+        Ok: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgGreenBright(' Ok ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Database[Ok]>   ' + str)
+        },
+        Err: (str) => {
+            const DataTime = DataTime()
+            console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgRedBright(' Err ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + DataTime + ']' + ' Database[Err]>  ' + str)
+        },
+        Warn: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgYellowBright(' Warn ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Database[Warn]> ' + str)
+        },
+        Info: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgBlueBright(' Info ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Database [Info]> ' + str)
+        },
+        Deb: (str) => {
+            const currentTime = DataTime()
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgMagentaBright(' Deb ') + chalk.bold.cyanBright(' > ' + str))
+            log('[' + currentTime + ']' + ' Database[Deb]>  ' + str)
+        }
     }
 }
 
 const log = (message) => {
-    fs.open(`${process.cwd()}/Logs/logs.txt`, 'a', (err, fd) => {
+    const date = new Date();
+    const formattedDate = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear().toString().slice(-2)}`; // Месяц-Число-Год
+    const logFileName = `log_${formattedDate}.txt`; // log_Месяц-Число-Год.txt
+
+    fs.open(`${process.cwd()}/Logs/${logFileName}`, 'a', (err, fd) => {
         if (err) throw err;
         fs.appendFile(fd, message + '\n', (err) => {
             if (err) throw err;
@@ -54,6 +78,6 @@ const log = (message) => {
             });
         });
     });
-}
+};
 
 module.exports = Logger
