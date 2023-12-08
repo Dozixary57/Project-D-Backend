@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const Logger = require("./Logger");
 
 async function EnvironmentVariablesRegistration(fastify) {
 

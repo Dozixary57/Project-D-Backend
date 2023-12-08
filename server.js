@@ -1,6 +1,7 @@
 const Logger = require("./Tools/Logger");
 const dataUpdater = require("./Tools/DataUpdater");
 (async () => {
+
     const fastify = require('fastify')(/*{ logger: true }*/)
     const Logger = require('./Tools/Logger')
 
@@ -24,14 +25,6 @@ const dataUpdater = require("./Tools/DataUpdater");
     // data
     const route_gridfs = require('./Routes/route_gridfs')
     route_gridfs(fastify)
-
-    // Authentication
-    const JWT_Cookie_Registration = require('./Tools/JWT_Cookie_Registration')
-    JWT_Cookie_Registration(fastify)
-
-    // Authentication routes
-    const route_authentication = require('./Routes/route_authentication')
-    route_authentication(fastify)
 
     // Data Updater
 /*    fastify.ready(err => {
