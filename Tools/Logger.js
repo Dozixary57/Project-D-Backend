@@ -11,56 +11,61 @@ const Logger = {
     Server: {
         Ok: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgGreenBright(' Ok ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgGreenBright(' Ok ') + chalk.bold.greenBright(' > ' + str))
             log('[' + currentTime + ']' + ' Server[Ok]>     ' + str)
         },
         Err: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgRedBright(' Err ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgRedBright(' Err ') + chalk.bold.redBright(' > ' + str))
             log('[' + currentTime + ']' + ' Server[Err]>    ' + str)
         },
         Warn: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgYellowBright(' Warn ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgYellowBright(' Warn ') + chalk.bold.yellowBright(' > ' + str))
             log('[' + currentTime + ']' + ' Server[Warn]>   ' + str)
         },
         Info: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgBlueBright(' Info ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgBlueBright(' Info ') + chalk.bold.blueBright(' > ' + str))
             log('[' + currentTime + ']' + ' Server[Info]>   ' + str)
         },
         Deb: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgMagentaBright(' Deb ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgCyanBright(' Server ') + chalk.bold.whiteBright.bgMagentaBright(' Deb ') + chalk.bold.magentaBright(' > ' + str))
             log('[' + currentTime + ']' + ' Server[Deb]>    ' + str)
         }
     },
     Database: {
         Ok: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgGreenBright(' Ok ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgGreenBright(' Ok ') + chalk.bold.greenBright(' > ' + str))
             log('[' + currentTime + ']' + ' Database[Ok]>   ' + str)
         },
         Err: (str) => {
             const DataTime = DataTime()
-            console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgRedBright(' Err ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgRedBright(' Err ') + chalk.bold.redBright(' > ' + str))
             log('[' + DataTime + ']' + ' Database[Err]>  ' + str)
         },
         Warn: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgYellowBright(' Warn ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgYellowBright(' Warn ') + chalk.bold.yellowBright(' > ' + str))
             log('[' + currentTime + ']' + ' Database[Warn]> ' + str)
         },
         Info: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgBlueBright(' Info ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgBlueBright(' Info ') + chalk.bold.blueBright(' > ' + str))
             log('[' + currentTime + ']' + ' Database [Info]> ' + str)
         },
         Deb: (str) => {
             const currentTime = DataTime()
-            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgMagentaBright(' Deb ') + chalk.bold.cyanBright(' > ' + str))
+            console.log(chalk.white('[' + currentTime + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgMagentaBright(' Deb ') + chalk.bold.magentaBright(' > ' + str))
             log('[' + currentTime + ']' + ' Database[Deb]>  ' + str)
         }
+    },
+    Title: (str) => {
+        const currentTime = DataTime()
+        console.log(chalk.whiteBright('[' + currentTime + '] ') + chalk.whiteBright.bgBlack('< = = = = = [ ' + str + ' ] = = = = = > '))
+        log('[' + currentTime + '] < = = = = = [ ' + str + ' ] = = = = = > ')
     }
 }
 

@@ -11,6 +11,7 @@ module.exports = async function (fastify) {
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
     }).ready(() => {
+        Logger.Title('External Libraries Registration');
         Logger.Server.Ok('@Fastify/Cors успешно зарегестрирован!')
     })
 
@@ -38,7 +39,5 @@ module.exports = async function (fastify) {
     })
 
     // Fastify User Agent
-    fastify.register(require('fastify-user-agent')).ready(()=>
-        Logger.Server.Ok('@Fastify-user-agent успешно зарегестрирован!')
-    )
+    fastify.register(require('fastify-user-agent')).ready(()=> Logger.Server.Ok('@Fastify-user-agent успешно зарегестрирован!'))
 }
