@@ -26,11 +26,6 @@ const FileSystemWatchers = require("./Tools/FileSystemWatchers");
     const route_gridfs = require('./Routes/route_gridfs')
     route_gridfs(fastify)
 
-    fastify.ready(async (err) => {
-        if (err) throw err;
-        const FileSystemWatchers = require('./Tools/FileSystemWatchers');
-        FileSystemWatchers.ItemIconsWatcher(fastify);
-    });
 
 
     // Data Updater
@@ -50,6 +45,12 @@ const FileSystemWatchers = require("./Tools/FileSystemWatchers");
     fastify.setNotFoundHandler((req, reply) => {
         reply.code(404).send('This route not found.');
     })
+
+    fastify.ready(async (err) => {
+        if (err) throw err;
+        const FileSystemWatchers = require('./Tools/FileSystemWatchers');
+        FileSystemWatchers.ItemIconsWatcher(fastify);
+    });
 
     // Run the server
     fastify.listen({ port: fastify.config.PORT || 5050 }, (err, address) => {

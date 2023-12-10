@@ -41,6 +41,8 @@ module.exports = function(fastify) {
                     });
                 }
             })
+
+            const DataAggregationPipelines = require('./DataAggregationPipelines')
                     // Загрузить новый файл
             const uploadStream = bucket.openUploadStream(fileName);
             const fileStream = fs.createReadStream(filePath);
@@ -51,6 +53,10 @@ module.exports = function(fastify) {
                 })
                 .on('finish', () => {
                     Logger.Server.Ok(`Файл [${fileName}] успешно загружен в БД.`);
+
+                    Logger.Database.Info(`Устанавливаем связь документов [${fileName.replace('.png', '')}]...`)
+                    DataAggregationPipelines(fastify).UpdateItemIcon(fileName);
+
                     // Удаляем файл после обработки
                     fs.unlink(filePath, (err) => {
                         if (err) {

@@ -28,7 +28,7 @@
     "fastify": "^4.17.0",
     "fastify-user-agent": "^1.0.1",
     "mercurius": "^13.1.0",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.0.2",
     "npm-path": "^2.0.4"
   }
 }
