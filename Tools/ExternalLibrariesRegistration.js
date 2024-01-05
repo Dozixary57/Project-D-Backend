@@ -1,7 +1,7 @@
 const cors = require("@fastify/cors");
 const Logger = require("./Logger");
 const path = require("path");
-const route_gridfs = require("../Routes/route_gridfs");
+const mercurius = require("mercurius");
 
 module.exports = async function (fastify) {
 
@@ -30,41 +30,45 @@ module.exports = async function (fastify) {
         Logger.Server.Ok('@Fastify/WebSocket успешно зарегестрирован!')
     })
 
-    // Static
+// Static
     fastify.register(require('@fastify/static'), {
         root: path.join(process.cwd(), 'GridFS', 'MediaStore', 'Icons'),
         prefix: '/Icon/',
         constraints: { host: 'localhost:5000' }
     }).ready(()=> {
-        Logger.Server.Ok('@Fastify/Static Icons успешно зарегестрирован!')
+        Logger.Server.Ok('@Fastify/Static Icons успешно зарегистрирован!')
     })
     fastify.register(require('@fastify/static'), {
         root: path.join(process.cwd(), 'GridFS', 'MediaStore', 'Covers'),
         prefix: '/Cover/',
-        constraints: { host: 'localhost:5000' }
+        constraints: { host: 'localhost:5000' },
+        decorateReply: false // this will prevent the second plugin from adding sendFile
     }).ready(()=> {
-        Logger.Server.Ok('@Fastify/Static Covers успешно зарегестрирован!')
+        Logger.Server.Ok('@Fastify/Static Covers успешно зарегистрирован!')
     })
     fastify.register(require('@fastify/static'), {
         root: path.join(process.cwd(), 'GridFS', 'MediaStore', 'Parallaxes'),
         prefix: '/Parallax/',
-        constraints: { host: 'localhost:5000' }
+        constraints: { host: 'localhost:5000' },
+        decorateReply: false // this will prevent the third plugin from adding sendFile
     }).ready(()=> {
-        Logger.Server.Ok('@Fastify/Static Parallaxes успешно зарегестрирован!')
+        Logger.Server.Ok('@Fastify/Static Parallaxes успешно зарегистрирован!')
     })
     fastify.register(require('@fastify/static'), {
         root: path.join(process.cwd(), 'GridFS', 'MediaStore', 'Models'),
         prefix: '/Model/',
-        constraints: { host: 'localhost:5000' }
+        constraints: { host: 'localhost:5000' },
+        decorateReply: false // this will prevent the fourth plugin from adding sendFile
     }).ready(()=> {
-        Logger.Server.Ok('@Fastify/Static Models успешно зарегестрирован!')
+        Logger.Server.Ok('@Fastify/Static Models успешно зарегистрирован!')
     })
     fastify.register(require('@fastify/static'), {
         root: path.join(process.cwd(), 'GridFS', 'MediaStore', 'Sounds'),
         prefix: '/Sound/',
-        constraints: { host: 'localhost:5000' }
+        constraints: { host: 'localhost:5000' },
+        decorateReply:false // this will prevent the fifth plugin from adding sendFile
     }).ready(()=> {
-        Logger.Server.Ok('@Fastify/Static Sounds успешно зарегестрирован!')
+        Logger.Server.Ok('@Fastify/Static Sounds успешно зарегистрирован!')
     })
 
     // Fastify User Agent

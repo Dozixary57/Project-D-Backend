@@ -1,13 +1,16 @@
-const Logger = require("./Tools/Logger");
-const dataUpdater = require("./Tools/DataUpdater");
-const FileSystemWatchers = require("./Tools/FileSystemWatchers");
 (async () => {
-
     const fastify = require('fastify')(/*{ logger: true }*/)
     const Logger = require('./Tools/Logger')
 
     const EnvironmentVariablesRegistration = require('./Tools/EnvironmentVariablesRegistration')
     await EnvironmentVariablesRegistration(fastify)
+
+    const route_items = require('./Routes/route_items')
+    await route_items(fastify)
+
+    // data
+    const route_gridfs = require('./Routes/route_gridfs')
+    await route_gridfs(fastify)
 
     const ExternalLibrariesRegistration = require('./Tools/ExternalLibrariesRegistration')
     await ExternalLibrariesRegistration(fastify)
@@ -19,26 +22,6 @@ const FileSystemWatchers = require("./Tools/FileSystemWatchers");
 
     // Declare a main routes
     // For client
-    const route_items = require('./Routes/route_items')
-    route_items(fastify)
-
-    // data
-    const route_gridfs = require('./Routes/route_gridfs')
-    route_gridfs(fastify)
-
-
-
-    // Data Updater
-/*    fastify.ready(err => {
-        if (err) throw err
-        if (fastify.mongo.client.s.url.indexOf("mongodb+srv://") !== -1) {
-            const dataUpdater = require('./Tools/DataUpdater')
-            dataUpdater(fastify)
-        }
-    })*/
-
-    const dataUpdater = require('./Tools/DataUpdater')
-    await dataUpdater(fastify)
 
 
     // Error handler for non-existent routes
@@ -48,8 +31,11 @@ const FileSystemWatchers = require("./Tools/FileSystemWatchers");
 
     fastify.ready(async (err) => {
         if (err) throw err;
-        const FileSystemWatchers = require('./Tools/FileSystemWatchers');
-        FileSystemWatchers.ItemIconsWatcher(fastify);
+
+        const DataChangesWatchers = require('./Tools/DataChangesWatchers');
+        await DataChangesWatchers(fastify).ItemIconsWatcher();
+        await DataChangesWatchers(fastify).ItemsCollectionWatcher();
+
     });
 
     // Run the server

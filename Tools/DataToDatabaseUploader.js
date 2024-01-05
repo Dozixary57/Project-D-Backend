@@ -23,7 +23,6 @@ module.exports = function(fastify) {
                 }
             }
 
-
             const filePath = path.join(dirPath, fileName)
 
             let fileCursor = bucket.find({ filename: fileName });

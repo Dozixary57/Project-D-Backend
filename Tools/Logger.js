@@ -42,7 +42,7 @@ const Logger = {
             log('[' + currentTime + ']' + ' Database[Ok]>   ' + str)
         },
         Err: (str) => {
-            const DataTime = DataTime()
+            const currentTime = DataTime()
             console.log(chalk.white('[' + DataTime() + '] ') + chalk.bold.whiteBright.bgBlackBright(' Database ') + chalk.bold.whiteBright.bgRedBright(' Err ') + chalk.bold.redBright(' > ' + str))
             log('[' + DataTime + ']' + ' Database[Err]>  ' + str)
         },

@@ -47,7 +47,7 @@ module.exports = async function (fastify) {
                 if (await fileCursor.hasNext()) {
                     Logger.Server.Ok(`Иконка [${req.params.id}] найдена в БД. Поиск иконки [${req.params.id}] на сервере...`);
                     const fileName = (await fileCursor.next()).filename;
-                    if (fs.existsSync(path.join('GridFS', 'Covers', `${ fileName }`))) {
+                    if (fs.existsSync(path.join('GridFS', 'MediaStore', 'Icons', `${ fileName }`))) {
                         Logger.Server.Info(`Иконка [${req.params.id}] найдена на сервере. Отправка на клиент...`);
                         fileUrl = `${protocol}://${host}/Icon/${fileName.replace(/ /g, "_")}`;
                         reply.status(200).send(fileUrl)
@@ -73,7 +73,6 @@ module.exports = async function (fastify) {
             }
         } catch (err) {
             Logger.Server.Err(`Не удалось получить и отправить иконку [${req.params.id}] на клиент.`)
-            Logger.Server.Deb(err)
             return;
         }
     });

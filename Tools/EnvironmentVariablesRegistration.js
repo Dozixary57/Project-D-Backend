@@ -13,6 +13,14 @@ async function EnvironmentVariablesRegistration(fastify) {
                 type: 'string',
                 default: '5000'
             },
+            SERVER: {
+                type: 'string',
+                default: 'http://localhost:5000'
+            },
+            CLIENT: {
+                type: 'string',
+                default: 'http://localhost:3000'
+            },
             MONGODB_URL_COMPASS: {
                 type: 'string',
                 default: ''
