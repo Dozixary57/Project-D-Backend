@@ -25,6 +25,10 @@ module.exports = async function (fastify) {
         Logger.Server.Ok('@Fastify/MongoDB успешно зарегестрирован!')
     })
 
+    const MercuriusQueries = require('../MercuriusQueries/MercuriusQueries')
+    await MercuriusQueries(fastify)
+
+
     // WebSocket
     fastify.register(require('@fastify/websocket')).ready(() => {
         Logger.Server.Ok('@Fastify/WebSocket успешно зарегестрирован!')
