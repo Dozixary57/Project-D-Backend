@@ -44,6 +44,10 @@ async function EnvironmentVariablesRegistration(fastify) {
             COLLECTION_NEWSTYPES: {
                 type: 'string',
                 default: ''
+            },
+            COLLECTION_NEWS: {
+                type: 'string',
+                default: ''
             }
         }
     }

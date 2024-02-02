@@ -5,6 +5,7 @@ module.exports = async function (fastify) {
 
     const collectionItems = fastify.config.COLLECTION_ITEMS
     const collectionNewsTypes = fastify.config.COLLECTION_NEWSTYPES
+    const collectionNews = fastify.config.COLLECTION_NEWS
     const server = fastify.config.SERVER
 
     const schema = `
@@ -39,16 +40,24 @@ module.exports = async function (fastify) {
     Title: String
     }
 
-    type content {
-        Annotation: String
-    }
-
     type AllNews {
     _id: String
     Title: String
     Type: String
-    Content: content
+    Annotation: String
     PublicationDate: String
+    }
+
+    type content {
+        Annotation: String
+    }
+
+    type OneNews {
+        _id: String
+        Title: String
+        Type: String
+        Content: content
+        PublicationDate: String    
     }
 
     type Query {
@@ -56,8 +65,9 @@ module.exports = async function (fastify) {
     ItemQuery (ParamsId: String!): Item
     NewsTypesQuery: [NewsTypes]
     AllNewsQuery: [AllNews]
+    OneNewsQuery (ParamsId: String!): OneNews
     }
-    `;
+    `; 
 
     const resolvers = {
         Query: {
@@ -122,19 +132,43 @@ module.exports = async function (fastify) {
                     return;
                 }
 
-                const result = await Promise.all(news.map(async (document) => {
+                const filteredNews = news.filter((document) => Number(document.PublicationDate) <= Date.now());
+
+                const result = await Promise.all(filteredNews.map(async (document) => {
                     const newsType = await fastify.mongo.db.collection('NewsTypes').findOne({ _id: document.Type });
             
                     return {
                         _id: document._id,
                         Title: document.Title,
                         Type: newsType ? newsType.Title : null,
-                        Content: document.Content,
+                        Annotation: document.Content.Annotation,
                         PublicationDate: document.PublicationDate,
                     };
                 }));
             
                 return result;
+            },
+            OneNewsQuery: async (obj, { ParamsId }, context) => {
+
+                let news = await fastify.mongo.db.collection(collectionNews).findOne({ Title: ParamsId.replace(/_/g, ' ') });
+
+                if (!news) {
+                    const id = new fastify.mongo.ObjectId(ParamsId)
+                    news = await fastify.mongo.db.collection(collectionNews).findOne({ _id: id })
+                    if (!news) {
+                        return;
+                    }
+                }
+
+                const newsType = await fastify.mongo.db.collection(collectionNewsTypes).findOne({ _id: news.Type });
+
+                return {
+                    _id: news._id,
+                    Title: news.Title,
+                    Type: newsType ? newsType.Title : null,
+                    Content: news.Content,
+                    PublicationDate: news.PublicationDate,
+                };
             },
         },
     };

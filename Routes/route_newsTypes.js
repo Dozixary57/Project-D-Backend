@@ -32,9 +32,7 @@ module.exports = async function (fastify) {
                 _id
                 Title
                 Type
-                Content {
-                  Annotation
-                }
+                Annotation
                 PublicationDate
               }
             }
@@ -45,6 +43,32 @@ module.exports = async function (fastify) {
       } catch (err) {
           Logger.Server.Err(err);
           reply.status(404).send({'massage' : 'Item not found.'})
+      }
+    })
+
+    fastify.get('/One_News/:titleId', async function (req, reply) {
+      try {
+        const ParamsId = req.params.titleId;
+
+        const query = `
+          query {
+            OneNewsQuery(ParamsId: "${ParamsId}") {
+              _id
+              Title
+              Type
+              Content {
+                Annotation
+              }
+              PublicationDate
+            }
+          }
+        `;
+
+        const result = await fastify.graphql(query);
+        reply.status(200).send(result.data.OneNewsQuery)
+      } catch (err) {
+        Logger.Server.Err(err);
+        reply.status(404).send({'massage' : 'Item not found.'})
       }
     })
 
