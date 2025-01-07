@@ -33,6 +33,7 @@ module.exports = async function (fastify) {
                 Title
                 Type
                 Annotation
+                Author
                 PublicationDate
               }
             }
@@ -59,12 +60,17 @@ module.exports = async function (fastify) {
               Content {
                 Annotation
               }
+              Author
               PublicationDate
             }
           }
         `;
 
         const result = await fastify.graphql(query);
+        if (Number(result.data.OneNewsQuery.PublicationDate) > Date.now()) {
+          reply.status(200).send({"message": "News not found."});
+          return;
+        }
         reply.status(200).send(result.data.OneNewsQuery)
       } catch (err) {
         Logger.Server.Err(err);

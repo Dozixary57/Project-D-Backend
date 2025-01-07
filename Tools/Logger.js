@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require('path');
 const chalk = require("chalk");
 
 function DataTime() {
@@ -73,6 +74,12 @@ const log = (message) => {
     const date = new Date();
     const formattedDate = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear().toString().slice(-2)}`; // Месяц-Число-Год
     const logFileName = `log_${formattedDate}.txt`; // log_Месяц-Число-Год.txt
+
+    const logsDir = path.join(process.cwd(), 'Logs');
+    if (!fs.existsSync(logsDir)) {
+       fs.mkdirSync(logsDir, { recursive: true });
+    }
+ 
 
     fs.open(`${process.cwd()}/Logs/${logFileName}`, 'a', (err, fd) => {
         if (err) throw err;
