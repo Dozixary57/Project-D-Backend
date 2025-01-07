@@ -28,14 +28,22 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="CryptoKeyPair\privateKey.pem" />
+    <Content Include="CryptoKeyPair\publicKey.pem" />
     <Content Include="PartOfCode.txt" />
-    <Content Include="routes\route_items.js" />
+    <Content Include="Routes\route_authentication.js" />
+    <Content Include="Routes\route_gridfs.js" />
+    <Content Include="Routes\route_items.js" />
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="Tools\CryptoKeyPair_Generator.js" />
+    <Content Include="Tools\JWT_Cookie_Registration.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="routes\" />
+    <Folder Include="Authentication\" />
+    <Folder Include="GridFS\" />
+    <Folder Include="GridFS\Covers\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

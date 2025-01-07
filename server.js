@@ -1,28 +1,49 @@
-const fastify = require('fastify')(/*{ logger: true }*/)
+(async () => {
+    const fastify = require('fastify')(/*{ logger: true }*/)
+    const Logger = require('./Tools/Logger')
 
-// Declare a route
-fastify.get('/', (request, reply) => {
-    reply.send('Server is running!')
-})
+    const EnvironmentVariablesRegistration = require('./Tools/EnvironmentVariablesRegistration')
+    await EnvironmentVariablesRegistration(fastify)
 
-// Declare a connection to MongoDB
-fastify.register(require('@fastify/mongodb'), {
-    forceClose: true,
-    url: 'mongodb://127.0.0.1:27017',
-    database: 'ReactMongoDB_TEST'
-})
+    const route_items = require('./Routes/route_items')
+    await route_items(fastify)
+    const route_newsTypes = require('./Routes/route_newsTypes')
+    await route_newsTypes(fastify)
 
-const route = require('./routes/route_items')
+    // data
+    const route_gridfs = require('./Routes/route_gridfs')
+    await route_gridfs(fastify)
 
-// Error handler for non-existent routes
-fastify.setNotFoundHandler((req, reply) => {
-    reply.code(404).send('This route not found.');
-})
+    const ExternalLibrariesRegistration = require('./Tools/ExternalLibrariesRegistration')
+    await ExternalLibrariesRegistration(fastify)
 
-route(fastify)
+    // Declare a service route
+    fastify.get('/', (request, reply) => {
+        reply.send('Server is running!')
+    })
 
-// Run the server
-fastify.listen({ port: 5000 }, (err, address) => {
-    if (err) throw err
-    console.log(`Server is now listening on ${address}`)
-})
+    // Declare a main routes
+    // For client
+
+
+    // Error handler for non-existent routes
+    fastify.setNotFoundHandler((req, reply) => {
+        reply.code(404).send('This route not found.');
+    })
+
+    fastify.ready(async (err) => {
+        if (err) throw err;
+
+        const DataChangesWatchers = require('./Tools/DataChangesWatchers');
+        await DataChangesWatchers(fastify).ItemIconsWatcher();
+        await DataChangesWatchers(fastify).ItemsCollectionWatcher();
+
+    });
+
+    // Run the server
+    fastify.listen({ port: fastify.config.PORT || 5050 }, (err, address) => {
+        if (err) throw err
+        Logger.Server.Ok(`The server is running! ( ${address} )`)
+    })
+
+})();
