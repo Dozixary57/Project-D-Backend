@@ -65,12 +65,12 @@ module.exports = async function (fastify) {
         Logger.Server.Ok('@Fastify/Static Models library has been successfully registered!')
     })
     // fastify.register(require('@fastify/static'), {
-    //     root: path.join(process.cwd(), 'GridFS', 'MediaStore', 'Sounds'),
+    //     root: path.join(process.cwd(), 'MediaStorage', 'Sounds'),
     //     prefix: '/Sound/',
     //     constraints: { host: 'localhost:5000' },
-    //     decorateReply:false // this will prevent the fifth plugin from adding sendFile
+    //     decorateReply:false
     // }).ready(()=> {
-    //     Logger.Server.Ok('@Fastify/Static Sounds успешно зарегистрирован!')
+    //     Logger.Server.Ok('@Fastify/Static Sounds library has been successfully registered!')
     // })
 
     // Fastify User Agent

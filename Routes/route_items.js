@@ -34,6 +34,7 @@ module.exports = async function (fastify) {
         query {
           ItemQuery(ParamsId: "${ParamsId}") {
             _id
+            Category
             Title
             Description {
               General
@@ -44,8 +45,21 @@ module.exports = async function (fastify) {
               Type
               Subclass
             }
+            Characteristics
             IconURL
             ModelURL
+            Media {
+              Sounds {
+                Title
+                Description
+                Url
+              }
+              Images {
+                Title
+                Description
+                Url
+              }
+            }
           }
         }
       `;

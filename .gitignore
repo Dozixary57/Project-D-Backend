@@ -365,3 +365,6 @@ FodyWeavers.xsd
 # node_modules
 node_modules/
 .env
+
+# MediaStorage files
+MediaStorage/

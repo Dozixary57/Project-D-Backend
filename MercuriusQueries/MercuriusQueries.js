@@ -1,4 +1,4 @@
-const { checkFileExists } = require("../Tools/FileTools");
+const { checkFileExists, getAnyFileSubtitles } = require("../Tools/FileTools");
 const path = require("path");
 const Logger = require("../Tools/Logger");
 const mercurius = require('mercurius');
@@ -13,10 +13,18 @@ module.exports = async function (fastify) {
   const iconDir = (title) => path.join(process.cwd(), `/MediaStorage/Icons/${(title).replace(/_/g, ' ')}.png`)
   const modelDir = (title) => path.join(process.cwd(), `/MediaStorage/Models/${(title).replace(/_/g, ' ')}.glb`)
 
+  const soundDir = path.join(process.cwd(), '/MediaStorage/Sounds');
+  const soundURL = (title) => `${server}/Sound/${(title).replace(/ /g, '_')}.mp3`
+
+  const imagesDir = path.join(process.cwd(), '/MediaStorage/Images');
+  const imageURL = (title) => `${server}/Image/${(title).replace(/ /g, '_')}.png`
+
   const iconURL = (title) => `${server}/Icon/${(title).replace(/ /g, '_')}.png`
   const modelURL = (title) => `${server}/Model/${(title).replace(/ /g, '_')}.glb`
 
   const schema = `
+    scalar JSON
+
     type Items {
       _id: String
       ID: Int
@@ -34,14 +42,28 @@ module.exports = async function (fastify) {
       Subclass: String
     }
 
+    type mediaUnit {
+      Title: String
+      Description: String
+      Url: String
+    }
+
+    type allMedia {
+      Sounds: [mediaUnit]
+      Images: [mediaUnit]
+    }
+
     type Item {
       _id: String
+      Category: String
       Title: String
       Description: description
       Lore: String
       Classification: classification
+      Characteristics: [JSON]
       IconURL: String
       ModelURL: String
+      Media: allMedia
     }
 
     type NewsTypes {
@@ -106,19 +128,15 @@ module.exports = async function (fastify) {
         }
 
         let type = null;
-
-        try {
-          type = await fastify.mongo.db.collection('Classifications').findOne({ _id: item.Classification.Type });
-        } catch (err) {
-          // console.log(err)
-        }
-
         let subclass = null;
 
         try {
-          subclass = type.Subclass.find(sub => sub._id.equals(item.Classification.Subclass));
+          const _type = await fastify.mongo.db.collection('Classifications').findOne({ _id: item.Classification.Type });
+          type = _type.Type;
+          const _subclass = await _type.Subclass.find(sub => sub._id.equals(item.Classification.Subclass));
+          subclass = _subclass.Title;
         } catch (err) {
-          // console.log(err)
+          console.log(err)
         }
 
         const classification = {
@@ -126,17 +144,65 @@ module.exports = async function (fastify) {
           Subclass: subclass
         };
 
+        // const characteristics = 
+
         const iconUrlExists = await checkFileExists(iconDir(item.Title));
         const modelUrlExists = await checkFileExists(modelDir(item.Title));
 
+        let media = {
+          Sounds: [],
+          Images: [],
+        };
+
+        try {
+          await getAnyFileSubtitles(soundDir, item.Title).then((result) => {
+            if (result.length > 0) {
+              for (const soundSubtitle of result) {
+
+                const matchingSound = item.Media.Sounds.find(sound => sound.Title === soundSubtitle);
+
+                media.Sounds.push({
+                  Title: soundSubtitle,
+                  Description: matchingSound? matchingSound.Description : "",
+                  Url: soundURL(item.Title + " - " + soundSubtitle)
+                })
+              }
+            }
+          })
+        } catch (err) {
+          console.log(err)
+        }
+
+        try {
+          await getAnyFileSubtitles(imagesDir, item.Title).then((result) => {
+            if (result.length > 0) {
+              for (const fileSubtitle of result) {
+
+                const matching = item.Media.Sounds.find(sound => sound.Title === fileSubtitle);
+
+                media.Images.push({
+                  Title: fileSubtitle,
+                  Description: "",
+                  Url: imageURL(item.Title + " - " + fileSubtitle)
+                })
+              }
+            }
+          })
+        } catch (err) {
+          console.log(err)
+        }
+
         return {
           _id: item._id,
+          Category: "Item",
           Title: item.Title,
           Description: item.Description,
           Lore: item.Lore,
           Classification: classification,
+          Characteristics: item.Characteristics,
           IconURL: iconUrlExists ? iconURL(item.Title) : "",
           ModelURL: modelUrlExists ? modelURL(item.Title) : "",
+          Media: media
         };
       },
       NewsTypesQuery: async () => {
