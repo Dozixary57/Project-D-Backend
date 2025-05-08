@@ -7,6 +7,10 @@
 
     const route_items = require('./Routes/route_items')
     await route_items(fastify)
+
+    const route_objects  = require('./Routes/route_objects')
+    await route_objects(fastify)
+
     const route_newsTypes = require('./Routes/route_newsTypes')
     await route_newsTypes(fastify)
 

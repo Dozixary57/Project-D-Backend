@@ -32,11 +32,6 @@ module.exports = async function (fastify) {
       IconURL: String
     }
 
-    type description {
-      General: String
-      Authorial: String
-    }
-
     type classification {
       Type: String
       Subclass: String
@@ -57,7 +52,7 @@ module.exports = async function (fastify) {
       _id: String
       Category: String
       Title: String
-      Description: description
+      Description: String
       Lore: String
       Classification: classification
       Characteristics: [JSON]
