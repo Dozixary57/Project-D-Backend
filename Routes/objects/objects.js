@@ -1,4 +1,4 @@
-const Logger = require("../Tools/Logger");
+const Logger = require("@Tools/Logger");
 const mongodb = require("mongodb");
 
 module.exports = async function (fastify) {

@@ -1,22 +1,28 @@
-const Logger = require("../Tools/Logger");
-const mongodb = require("mongodb");
+const Logger = require("@Tools/Logger");
 
 module.exports = async function (fastify) {
+  fastify.after(() => {
+    if (fastify.graphql) {
+      fastify.graphql.extendSchema(require('./schema'));
+      fastify.graphql.defineResolvers(require('./resolvers')(fastify));
+    }
+  });
+
   // let ParamsId;
 
   // Declare a route
   fastify.get('/Items', async function (req, reply) {
     try {
       const query = `
-              query {
-                ItemsQuery {
-                  _id
-                  ID
-                  Title
-                  IconURL
-                }
-              }
-            `;
+        query {
+          ItemsQuery {
+            _id
+            ID
+            Title
+            IconURL
+          }
+        }
+      `;
 
       const result = await fastify.graphql(query);
       reply.status(200).send(result.data.ItemsQuery)
@@ -70,13 +76,13 @@ module.exports = async function (fastify) {
     }
   })
 
-  fastify.put('/Object/Update', async function (req, reply) {
+  fastify.put('/Items/Update', async function (req, reply) {
     try {
       const data = req.body;
 
       console.log(data);
 
-      
+
       const object = await fastify.mongo.db.collection('Items').findOne({
         _id: new fastify.mongo.ObjectId(data._id)
       });

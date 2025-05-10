@@ -1,10 +1,9 @@
 const mongodb = require('mongodb')
 const fs = require('fs')
 const path = require('path');
-const Logger = require('../Tools/Logger')
+const Logger = require('@Tools/Logger')
 
 module.exports = async function (fastify) {
-
 	fastify.get('/GridFS/Icon/:id', async function (req, reply) {
 		try {
 			const host = req.headers.host;
@@ -13,7 +12,7 @@ module.exports = async function (fastify) {
 
 			Logger.Title(`Поиск иконки [${req.params.id}]`)
 
-			const db = fastify.mongo.db;
+			const db = fastify.mongo.GameInfo.db;
 			const bucket = new mongodb.GridFSBucket(db, { bucketName: 'icons' });
 
 			Logger.Database.Info(`Поиск иконки [${req.params.id}] по filename в БД.`)
@@ -76,19 +75,4 @@ module.exports = async function (fastify) {
 			return;
 		}
 	});
-
-	fastify.get('/Icon/:file', async (request, reply) => {
-		const fileName = request.params.file.replace(/_/g, ' ');
-		return reply.sendFile(fileName);
-	});
-
-	fastify.get('/Sound/:file', async (request, reply) => {
-		const fileName = request.params.file.replace(/_/g, ' ');
-		return reply.sendFile(fileName, { root: path.join(process.cwd(), 'MediaStorage', 'Sounds') });
-	});	
-
-	fastify.get('/Image/:file', async (request, reply) => {
-		const fileName = request.params.file.replace(/_/g, ' ');
-		return reply.sendFile(fileName, { root: path.join(process.cwd(), 'MediaStorage', 'Images') });
-	});	
 }

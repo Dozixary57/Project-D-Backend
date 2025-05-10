@@ -13,10 +13,10 @@
   "eslintConfig": {},
   "dependencies": {
     "@fastify/auth": "^4.3.0",
-    "@fastify/cookie": "^9.0.4",
+    "@fastify/cookie": "^9.4.0",
     "@fastify/cors": "^8.3.0",
     "@fastify/env": "^4.2.0",
-    "@fastify/jwt": "^7.2.0",
+    "@fastify/jwt": "^7.2.4",
     "@fastify/mongodb": "^7.0.0",
     "@fastify/routes": "^5.1.0",
     "@fastify/static": "^6.10.2",
@@ -25,10 +25,15 @@
     "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
     "eslint": "^8.42.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.31.0",
     "fastify": "^4.17.0",
-    "fastify-user-agent": "^1.0.1",
     "mercurius": "^13.1.0",
+    "module-alias": "^2.2.3",
     "nodemon": "^3.0.2",
     "npm-path": "^2.0.4"
+  },
+  "_moduleAliases": {
+    "@Tools": "./Tools"
   }
 }
