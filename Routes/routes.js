@@ -12,6 +12,8 @@ module.exports = [
 
   require('./gridfs/avatars/routes'),
 
+  require('./payment/routes'),
+
   require('./files/routes'),
   require('./gridfs/gridfs'),
 

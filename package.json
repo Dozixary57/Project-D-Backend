@@ -21,6 +21,7 @@
     "@fastify/routes": "^5.1.0",
     "@fastify/static": "^6.10.2",
     "@fastify/websocket": "^8.2.0",
+    "axios": "^1.9.0",
     "bcrypt": "^5.1.0",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
@@ -31,7 +32,8 @@
     "mercurius": "^13.1.0",
     "module-alias": "^2.2.3",
     "nodemon": "^3.0.2",
-    "npm-path": "^2.0.4"
+    "npm-path": "^2.0.4",
+    "uuid": "^11.1.0"
   },
   "_moduleAliases": {
     "@Tools": "./Tools"

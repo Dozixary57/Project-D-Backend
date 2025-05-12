@@ -59,8 +59,16 @@ async function EnvironmentVariablesRegistration(fastify) {
       COLLECTION_USERPRIVILEGES: {
         type: 'string',
         default: ''
-      },  
+      },
       COLLECTION_USERTITLES: {
+        type: 'string',
+        default: ''
+      },
+      YOOKASSA_SHOP_ID: {
+        type: 'string',
+        default: ''
+      },
+      YOOKASSA_SECRET_KEY: {
         type: 'string',
         default: ''
       },

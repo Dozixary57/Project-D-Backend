@@ -24,4 +24,19 @@ module.exports = async function (fastify) {
       reply.status(404).send({ 'massage': 'Item not found.' })
     }
   })
+
+  fastify.get('/Objects/SelectCategories', async function (req, reply) {
+    try {
+      reply.status(200).send([
+        { value: 'items', label: 'Items' },
+        { value: 'creatures', label: 'Creatures' },
+        { value: 'locations', label: 'Locations' },
+        { value: 'blocks', label: 'Blocks' },
+        { value: 'mechanics', label: 'Mechanics' },
+      ])
+    } catch (err) {
+      Logger.Server.Err(err);
+      reply.status(404).send({ 'massage': 'Item not found.' })
+    }
+  })
 }
