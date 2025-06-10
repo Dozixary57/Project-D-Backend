@@ -12,7 +12,6 @@ module.exports = async (fastify) => {
 
   fastify.post('/Login', async function (req, reply) {
     try {
-      // const userAgent = req.userAgent;
       const { UsernameEmail, Password } = req.body;
 
       const account = await fastify.mongo.AccountsInfo.db.collection(fastify.config.COLLECTION_ACCOUNTS).findOne({
@@ -44,12 +43,12 @@ module.exports = async (fastify) => {
     try {
       const { Username, Email, DateOfBirth, Password, CaptchaToken } = req.body;
 
-      const response = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
-        params: {
-          secret: '6LeLNIcpAAAAAPWQra5iuuvcMfYG9VMMaCQdl0UF',
-          response: CaptchaToken
-        }
-      })
+      // const response = await axios.post('https://www.google.com/recaptcha/api/siteverify', null, {
+      //   params: {
+      //     secret: '6LeLNIcpAAAAAPWQra5iuuvcMfYG9VMMaCQdl0UF',
+      //     response: CaptchaToken
+      //   }
+      // })
 
       const accountUsernameExists = await fastify.mongo.AccountsInfo.db.collection(fastify.config.COLLECTION_ACCOUNTS).findOne({ Username: Username })
       const accountEmailExists = await fastify.mongo.AccountsInfo.db.collection(fastify.config.COLLECTION_ACCOUNTS).findOne({ Email: Email })

@@ -1,6 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
-const Logger = require("@Tools/Logger");
 const { TrackPaymentStatus } = require('@Tools/payment/TrackPaymentStatus');
 
 module.exports = async function (fastify) {
@@ -18,7 +17,7 @@ module.exports = async function (fastify) {
         },
         confirmation: {
           type: 'redirect',
-          return_url: 'http://localhost:3000/Donation',
+          return_url: 'http://localhost:3000/Receive',
         },
         capture: true,
         description: 'Test payment',

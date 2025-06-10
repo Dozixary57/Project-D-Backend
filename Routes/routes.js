@@ -4,6 +4,7 @@ module.exports = [
   require('./objects/objects'),
   require('./objects/items/routes'),
   require('./news/routes'),
+  require('./ideas/routes'),
 
   require('./auth/routes'),
   require('./accounts/routes'),

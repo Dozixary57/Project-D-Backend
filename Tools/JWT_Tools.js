@@ -1,7 +1,7 @@
 const Logger = require("./Logger");
 
 module.exports = async (fastify) => {
-    fastify.decorate('newAccessToken', function () {
+  fastify.decorate('newAccessToken', function () {
     return async function (accountId) {
       try {
 
@@ -161,4 +161,24 @@ module.exports = async (fastify) => {
         throw new Err(`${privilegeName}`);
     }
   });
+
+  // fastify.decorate('getJWTPayload', function () {
+  //   return async function (req, reply) {
+  //     try {
+  //       await req.jwtVerify();
+
+  //       const authHeader = req.headers['authorization'];
+
+  //       if (authHeader === undefined && authHeader.split(' ')[1] === null)
+  //         throw accessTokenError;
+
+  //       const token = authHeader.replace('Bearer ', '').trim();
+  //       console.log(token);
+
+  //     } catch (accessTokenError) {
+  //       Logger.Server.Warn('Authorization token is invalid');
+  //       return reply.status(401).send({ msg: 'Access denied' });
+  //     }
+  //   }
+  // });
 }
