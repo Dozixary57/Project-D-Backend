@@ -1,3 +1,5 @@
+const Logger = require("@Tools/Logger");
+
 module.exports = (fastify) => ({
   Query: {
     NewsTypesQuery: async () => {
@@ -11,7 +13,7 @@ module.exports = (fastify) => ({
 
       return result;
     },
-    AllNewsQuery: async () => {
+    NewsAllQuery: async () => {
       const news = await fastify.mongo.GameInfo.db.collection(fastify.config.COLLECTION_NEWS).find().toArray()
 
       if (!news) {
@@ -27,7 +29,7 @@ module.exports = (fastify) => ({
           _id: document._id,
           Title: document.Title,
           Type: newsType ? newsType.Title : null,
-          Annotation: document.Content.Annotation,
+          Annotation: document.Annotation,
           Author: document.Author,
           PublicationDate: document.PublicationDate,
         };
@@ -35,28 +37,26 @@ module.exports = (fastify) => ({
 
       return result;
     },
-    OneNewsQuery: async (obj, { ParamsId }, context) => {
+    NewsOneQuery: async (obj, { ParamsId }, context) => {
+      try {
+        let news = await fastify.mongo.GameInfo.db.collection(fastify.config.COLLECTION_NEWS).findOne({ _id: new fastify.mongo.ObjectId(ParamsId) });
 
-      let news = await fastify.mongo.GameInfo.db.collection(fastify.config.COLLECTION_NEWS).findOne({ Title: ParamsId.replace(/_/g, ' ') });
+        if (!news || Number(news.PublicationDate) > Date.now()) return;
 
-      if (!news) {
-        const id = new fastify.mongo.ObjectId(ParamsId)
-        news = await fastify.mongo.GameInfo.db.collection(fastify.config.COLLECTION_NEWS).findOne({ _id: id })
-        if (!news) {
-          return;
-        }
+        const newsType = await fastify.mongo.GameInfo.db.collection(fastify.config.COLLECTION_NEWSTYPES).findOne({ _id: news.Type });
+
+        return {
+          _id: news._id,
+          Title: news.Title,
+          Type: newsType ? newsType.Title : null,
+          Annotation: news.Annotation,
+          Author: news.Author,
+          PublicationDate: news.PublicationDate,
+        };
+      } catch (err) {
+        Logger.Server.Err(err);
+        return null;
       }
-
-      const newsType = await fastify.mongo.GameInfo.db.collection(fastify.config.COLLECTION_NEWSTYPES).findOne({ _id: news.Type });
-
-      return {
-        _id: news._id,
-        Title: news.Title,
-        Type: newsType ? newsType.Title : null,
-        Content: news.Content,
-        Author: news.Author,
-        PublicationDate: news.PublicationDate,
-      };
     },
   },
 });

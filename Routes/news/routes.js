@@ -11,14 +11,14 @@ module.exports = async function (fastify) {
   fastify.get('/News_Types', async function (req, reply) {
     try {
       const query = `
-              query {
-                NewsTypesQuery {
-                  _id
-                  Sequence
-                  Title
-                }
-              }
-            `;
+        query {
+          NewsTypesQuery {
+            _id
+            Sequence
+            Title
+          }
+        }
+      `;
 
       const result = await fastify.graphql(query);
       reply.status(200).send(result.data.NewsTypesQuery)
@@ -31,20 +31,20 @@ module.exports = async function (fastify) {
   fastify.get('/All_News', async function (req, reply) {
     try {
       const query = `
-            query {
-              AllNewsQuery {
-                _id
-                Title
-                Type
-                Annotation
-                Author
-                PublicationDate
-              }
-            }
-          `;
+        query {
+          NewsAllQuery {
+            _id
+            Title
+            Type
+            Annotation
+            Author
+            PublicationDate
+          }
+        }
+      `;
 
       const result = await fastify.graphql(query);
-      reply.status(200).send(result.data.AllNewsQuery)
+      reply.status(200).send(result.data.NewsAllQuery)
     } catch (err) {
       Logger.Server.Err(err);
       reply.status(404).send({ 'massage': 'Item not found.' })
@@ -56,69 +56,23 @@ module.exports = async function (fastify) {
       const ParamsId = req.params.titleId;
 
       const query = `
-          query {
-            OneNewsQuery(ParamsId: "${ParamsId}") {
-              _id
-              Title
-              Type
-              Content {
-                Annotation
-              }
-              Author
-              PublicationDate
-            }
+        query {
+          NewsOneQuery(ParamsId: "${ParamsId}") {
+            _id
+            Title
+            Type
+            Annotation
+            Author
+            PublicationDate
           }
-        `;
+        }
+      `;
 
       const result = await fastify.graphql(query);
-      if (Number(result.data.OneNewsQuery.PublicationDate) > Date.now()) {
-        reply.status(200).send({ "message": "News not found." });
-        return;
-      }
-      reply.status(200).send(result.data.OneNewsQuery)
+      reply.status(200).send(result.data.NewsOneQuery)
     } catch (err) {
       Logger.Server.Err(err);
-      reply.status(404).send({ 'massage': 'Item not found.' })
+      reply.status(404).send({ msg: 'News not found.' })
     }
   })
-
-  // fastify.get('/Item/:id', async function (req, reply) {
-  //     try {
-  //         const ParamsId = req.params.id;
-
-  //         const query = `
-  //           query {
-  //             ItemQuery(ParamsId: "${ParamsId}") {
-  //               _id
-  //               Title
-  //               Description {
-  //                 General
-  //                 Authorial
-  //               }
-  //               Classification {
-  //                 Type
-  //                 Subclass
-  //               }
-  //               IconURL
-  //             }
-  //           }
-  //         `;
-
-  //         const result = await fastify.graphql(query);
-
-  //         reply.status(200).send(result.data.ItemQuery)
-  //     } catch (err) {
-  //         Logger.Server.Err(err);
-  //         reply.status(404).send({'massage' : 'Item not found.'})
-  //     }
-  // })
-
-  // fastify.register(async function (fastify) {
-  //     fastify.get('/Items-WS', { websocket: true }, (connection /* SocketStream */, req /* FastifyRequest */) => {
-  //         connection.socket.on('message', async (message) => {
-  //             console.log(message.toString())
-  //             connection.socket.send('hi from server')
-  //         })
-  //     })
-  // })
 }

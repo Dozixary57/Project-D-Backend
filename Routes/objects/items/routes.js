@@ -8,8 +8,6 @@ module.exports = async function (fastify) {
     }
   });
 
-  // let ParamsId;
-
   // Declare a route
   fastify.get('/Items', async function (req, reply) {
     try {

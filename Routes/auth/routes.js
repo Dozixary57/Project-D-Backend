@@ -65,7 +65,6 @@ module.exports = async (fastify) => {
       }
 
       if (Object.keys(ErrMessages).length > 0) {
-        console.log(response.data.score)
         return reply.status(200).send(ErrMessages)
       }
 

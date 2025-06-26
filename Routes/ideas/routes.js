@@ -33,18 +33,7 @@ module.exports = async function (fastify) {
           $addFields: {
             VoteAmount: { $size: "$votes" },
             VoteValue: {
-              $sum: {
-                $map: {
-                  input: "$votes",
-                  as: "vote",
-                  in: {
-                    $multiply: [
-                      "$$vote.vote",
-                      { $ifNull: ["$$vote.credibility", 1] }
-                    ]
-                  }
-                }
-              }
+              $sum: "$votes.vote"
             }
           }
         },
@@ -82,6 +71,72 @@ module.exports = async function (fastify) {
     }
   });
 
+  fastify.get('/Idea/:titleId', async function (req, reply) {
+    try {
+      const ideaId = req.params.titleId;
+
+      if (!ideaId) {
+        return reply.status(400).send({ error: 'Invalid request: idea ID is required' });
+      }
+
+      const db = fastify.mongo.GameInfo.db;
+      const ideasCollection = db.collection("Ideas");
+      const votesCollection = db.collection("IdeaVotes");
+
+      const ideaObjectId = new fastify.mongo.ObjectId(ideaId);
+
+      let userId = null;
+
+      const token = req.headers['authorization']?.replace(/^bearer\s+/i, '').trim();
+      if (token) {
+        userId = fastify.jwt.decode(token)._id;
+      }
+
+      const ideaAggregation = await ideasCollection.aggregate([
+        { $match: { _id: ideaObjectId } },
+        {
+          $lookup: {
+            from: "IdeaVotes",
+            localField: "_id",
+            foreignField: "ideaId",
+            as: "votes"
+          }
+        },
+        {
+          $addFields: {
+            VoteAmount: { $size: "$votes" },
+            VoteValue: { $sum: "$votes.vote" }
+          }
+        },
+        {
+          $project: {
+            votes: 0
+          }
+        }
+      ]).toArray();
+
+      const idea = ideaAggregation[0];
+
+      if (!idea) {
+        return reply.status(404).send({ error: 'Idea not found' });
+      }
+
+      if (userId) {
+        const userVote = await votesCollection.findOne({
+          ideaId: ideaObjectId,
+          userId: new fastify.mongo.ObjectId(userId)
+        });
+
+        idea.CurrentUserVote = userVote?.vote ?? null;
+      }
+
+      return reply.status(200).send(idea);
+    } catch (err) {
+      console.error(err);
+      return reply.status(500).send({ error: 'Internal Server Error' });
+    }
+  });
+
   fastify.post('/Idea/Vote', { preHandler: fastify.verifyJWT() }, async function (req, reply) {
     try {
       const { ideaId, vote } = req.body;
@@ -90,8 +145,12 @@ module.exports = async function (fastify) {
         return reply.status(400).send({ err: 'Invalid request' });
       }
 
+      let userId = null;
+
       const token = req.headers['authorization']?.replace(/^bearer\s+/i, '').trim();
-      const userId = fastify.jwt.decode(token)._id;
+      if (token) {
+        userId = fastify.jwt.decode(token)._id;
+      }
 
       const db = fastify.mongo.GameInfo.db;
       const votesCollection = db.collection("IdeaVotes");
@@ -146,18 +205,7 @@ module.exports = async function (fastify) {
           $addFields: {
             VoteAmount: { $size: "$votes" },
             VoteValue: {
-              $sum: {
-                $map: {
-                  input: "$votes",
-                  as: "vote",
-                  in: {
-                    $multiply: [
-                      "$$vote.vote",
-                      { $ifNull: ["$$vote.credibility", 1] }
-                    ]
-                  }
-                }
-              }
+              $sum: "$votes.vote"
             }
           }
         },

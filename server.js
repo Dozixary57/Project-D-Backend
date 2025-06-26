@@ -7,7 +7,7 @@
   CheckKeyPair();
 
   await require('./EnvironmentVariablesRegistration')(fastify);
-  await require('./ExternalLibrariesRegistration')(fastify)
+  await require('./LibrariesRegistration')(fastify)
   await require('./Tools/JWT_Tools')(fastify);
 
   const routeModules = require('./Routes/routes');
